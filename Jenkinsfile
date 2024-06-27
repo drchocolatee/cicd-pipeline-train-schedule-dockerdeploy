@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        NVM_DIR = "/home/jenkins/.nvm"
+        NVM_DIR = "/var/lib/jenkins/workspace/train-schedule_master/.nvm"
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
                 script {
                     // Install nvm and use it within the container
                     sh '''
-                        export NVM_DIR="/home/jenkins/.nvm"
+                        export NVM_DIR="/var/lib/jenkins/workspace/train-schedule_master/.nvm"
                         mkdir -p $NVM_DIR
                         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
