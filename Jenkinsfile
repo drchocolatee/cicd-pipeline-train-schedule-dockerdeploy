@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         NVM_DIR = "/var/lib/jenkins/workspace/train-schedule_master/.nvm"
+        NPM_CONFIG_CACHE = "/var/lib/jenkins/workspace/train-schedule_master/.npm"
     }
 
     stages {
@@ -17,7 +18,9 @@ pipeline {
                     // Install nvm and use it within the container
                     sh '''
                         export NVM_DIR="/var/lib/jenkins/workspace/train-schedule_master/.nvm"
+                        export NPM_CONFIG_CACHE="/var/lib/jenkins/workspace/train-schedule_master/.npm"
                         mkdir -p $NVM_DIR
+                        mkdir -p $NPM_CONFIG_CACHE
                         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
                         nvm install 18.17.0
