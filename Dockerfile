@@ -31,7 +31,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Ensure the correct permissions for package files
-RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app
+RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app && \
+    chown -R root:root $NVM_DIR $NPM_CONFIG_CACHE && chmod -R 777 $NVM_DIR $NPM_CONFIG_CACHE
 
 # Install any needed packages
 RUN npm install
