@@ -44,7 +44,7 @@ COPY . .
 # Ensure the correct permissions for all files
 RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app && \
     chown -R root:root $NPM_CONFIG_CACHE && chmod -R 777 $NPM_CONFIG_CACHE && \
-    chown -R root:root /root/.npm && chmod -R 777 /root/.npm
+    chown -R root:root /root/ && chmod -R 777 /root/
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
