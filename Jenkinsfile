@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:18-buster'
+            image 'custom-node-java17:18-buster'
             args '-u 996:993 -p 8081:8080'
         }
     }
@@ -17,7 +17,7 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    // Install nvm, npm, and Java
+                    // Install nvm and npm
                     sh '''
                         export NVM_DIR="/var/lib/jenkins/workspace/train-schedule_master/.nvm"
                         export NPM_CONFIG_CACHE="/var/lib/jenkins/workspace/train-schedule_master/.npm"
@@ -28,12 +28,6 @@ pipeline {
                         nvm install 18.17.0
                         nvm use 18.17.0
                         npm install -g npm@latest
-
-                        # Temporarily switch to root to install Java
-                        sudo sh -c '
-                            apt-get update && \
-                            apt-get install -y openjdk-17-jdk
-                        '
                     '''
                 }
             }
