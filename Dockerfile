@@ -1,11 +1,10 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM node:18-buster
 
-# Set the working directory to /usr/src/app
-WORKDIR /usr/src/app
+# Set environment variables for nvm
+ENV NVM_DIR /root/.nvm
 
 # Install nvm and set up Node.js version
-ENV NVM_DIR /root/.nvm
 RUN mkdir -p $NVM_DIR && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     . $NVM_DIR/nvm.sh && \
@@ -13,6 +12,9 @@ RUN mkdir -p $NVM_DIR && \
     nvm use 18.17.0 && \
     nvm alias default 18.17.0 && \
     npm install -g npm@latest
+
+# Set the working directory to /usr/src/app
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
