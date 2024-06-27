@@ -29,9 +29,11 @@ pipeline {
                         nvm use 18.17.0
                         npm install -g npm@latest
 
-                        # Install Java
-                        apt-get update
-                        apt-get install -y openjdk-11-jdk
+                        # Temporarily switch to root to install Java
+                        sudo sh -c '
+                            apt-get update && \
+                            apt-get install -y openjdk-11-jdk
+                        '
                     '''
                 }
             }
