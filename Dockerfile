@@ -4,15 +4,13 @@ FROM node:18-buster
 # Set environment variables for nvm and npm
 ENV NVM_DIR /root/.nvm
 ENV NPM_CONFIG_CACHE /root/.npm
-ENV JAVA_HOME /usr/lib/jvm/java-17-amazon-corretto
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Add the Amazon Corretto repository and install Java 17
+# Install OpenJDK 17 and other dependencies
 USER root
-RUN mkdir -p /etc/yum.repos.d && \
-    chmod 755 /etc/yum.repos.d && \
-    curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
-    yum install -y java-17-amazon-corretto-devel curl
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk curl
 
 # Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
