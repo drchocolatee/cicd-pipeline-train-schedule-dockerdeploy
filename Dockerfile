@@ -4,17 +4,14 @@ FROM node:18-buster
 # Set environment variables for nvm and npm
 ENV NVM_DIR /root/.nvm
 ENV NPM_CONFIG_CACHE /root/.npm
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-17-amazon-corretto
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Add the AdoptOpenJDK repository and install Java 17
+# Add the Amazon Corretto repository and install Java 17
 USER root
-RUN apt-get update && \
-    apt-get install -y wget gnupg && \
-    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && \
-    echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
-    apt-get update && \
-    apt-get install -y temurin-17-jdk curl
+RUN mkdir -p /etc/yum.repos.d && \
+    curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
+    yum install -y java-17-amazon-corretto-devel curl
 
 # Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
