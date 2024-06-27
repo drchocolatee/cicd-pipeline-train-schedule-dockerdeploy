@@ -4,17 +4,17 @@ FROM node:18-buster
 # Set environment variables for nvm and npm
 ENV NVM_DIR /root/.nvm
 ENV NPM_CONFIG_CACHE /root/.npm
-ENV JAVA_HOME /usr/lib/jvm/adoptopenjdk-17-hotspot-amd64
+ENV JAVA_HOME /usr/lib/jvm/zulu-17-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Install OpenJDK 17 and other dependencies
+# Install Zulu OpenJDK 17 and other dependencies
 USER root
 RUN apt-get update && \
     apt-get install -y wget gnupg && \
-    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && \
-    echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
+    wget -qO - https://repos.azul.com/azul-repo.key | apt-key add - && \
+    echo "deb http://repos.azul.com/zulu/deb stable main" > /etc/apt/sources.list.d/zulu.list && \
     apt-get update && \
-    apt-get install -y temurin-17-jdk curl
+    apt-get install -y zulu17-jdk curl
 
 # Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
