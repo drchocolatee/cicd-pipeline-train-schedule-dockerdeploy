@@ -2,12 +2,12 @@
 FROM node:18
 
 # Install Java
-RUN apt-get update && \
-    apt-get install -y openjdk-11-jdk && \
-    apt-get clean;
+RUN yum -y update && \
+    yum -y install java-11-openjdk-devel && \
+    yum clean all
 
 # Set JAVA_HOME environment variable
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Set the working directory to /usr/src/app
