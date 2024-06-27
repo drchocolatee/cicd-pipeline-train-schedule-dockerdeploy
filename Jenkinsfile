@@ -16,8 +16,8 @@ pipeline {
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-                        nvm install 14.20.0
-                        nvm use 14.20.0
+                        nvm install 18.17.0
+                        nvm use 18.17.0
                         npm install -g npm@latest
                     '''
                 }
