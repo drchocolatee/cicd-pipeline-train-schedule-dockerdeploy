@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME = 'custom-node-java11:latest'
         NVM_DIR = "/root/.nvm"
         NPM_CONFIG_CACHE = "/root/.npm"
-        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64"
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64"
         PATH = "$JAVA_HOME/bin:$PATH"
     }
 
