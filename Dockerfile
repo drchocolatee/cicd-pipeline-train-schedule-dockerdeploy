@@ -30,7 +30,7 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Change ownership and permissions of the application directory
+# Ensure the correct permissions for package files
 RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app
 
 # Install any needed packages
@@ -38,6 +38,9 @@ RUN npm install
 
 # Copy the rest of the application source code to the working directory
 COPY . .
+
+# Ensure the correct permissions for all files
+RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
