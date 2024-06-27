@@ -1,16 +1,21 @@
 # Use an official Node.js runtime as a parent image
 FROM node:18-buster
 
-# Set environment variables for nvm
+# Set environment variables for nvm and npm
 ENV NVM_DIR /root/.nvm
+ENV NPM_CONFIG_CACHE /root/.npm
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
 
-# Install nvm and set up Node.js version
+# Install Java 17 and other necessary packages
+RUN apt-get update && apt-get install -y openjdk-17-jdk curl
+
+# Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
     . $NVM_DIR/nvm.sh && \
     nvm install 18.17.0 && \
     nvm use 18.17.0 && \
-    nvm alias default 18.17.0 && \
     npm install -g npm@latest
 
 # Set the working directory to /usr/src/app
