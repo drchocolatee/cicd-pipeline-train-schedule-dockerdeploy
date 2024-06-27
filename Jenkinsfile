@@ -2,12 +2,12 @@ pipeline {
     agent {
         docker {
             image 'node:18-buster'
-            args '-p 8081:8080'
+            args '-u 996:993 -p 8081:8080'
         }
     }
 
     environment {
-        NVM_DIR = "/root/.nvm"
+        NVM_DIR = "/home/jenkins/.nvm"
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
                 script {
                     // Install nvm and use it within the container
                     sh '''
-                        export NVM_DIR="/root/.nvm"
+                        export NVM_DIR="/home/jenkins/.nvm"
                         mkdir -p $NVM_DIR
                         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
