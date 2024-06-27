@@ -33,7 +33,7 @@ COPY package*.json ./
 # Ensure the correct permissions for package files
 RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app && \
     chown -R root:root $NVM_DIR $NPM_CONFIG_CACHE && chmod -R 777 $NVM_DIR $NPM_CONFIG_CACHE && \
-    chown -R root:root /root/.npm && chmod -R 777 /root/.npm
+    chown -R root:root /root && chmod -R 777 /root
 
 # Install any needed packages
 RUN npm install
