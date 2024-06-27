@@ -9,13 +9,15 @@ pipeline {
     environment {
         NVM_DIR = "/var/lib/jenkins/workspace/train-schedule_master/.nvm"
         NPM_CONFIG_CACHE = "/var/lib/jenkins/workspace/train-schedule_master/.npm"
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64"
+        PATH = "$JAVA_HOME/bin:$PATH"
     }
 
     stages {
         stage('Setup') {
             steps {
                 script {
-                    // Install nvm and use it within the container
+                    // Install nvm, npm, and Java
                     sh '''
                         export NVM_DIR="/var/lib/jenkins/workspace/train-schedule_master/.nvm"
                         export NPM_CONFIG_CACHE="/var/lib/jenkins/workspace/train-schedule_master/.npm"
@@ -26,6 +28,10 @@ pipeline {
                         nvm install 18.17.0
                         nvm use 18.17.0
                         npm install -g npm@latest
+
+                        # Install Java
+                        apt-get update
+                        apt-get install -y openjdk-11-jdk
                     '''
                 }
             }
