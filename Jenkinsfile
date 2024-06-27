@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'custom-node-java17:latest'
+        IMAGE_NAME = 'custom-node-java11:latest'
         NVM_DIR = "/root/.nvm"
         NPM_CONFIG_CACHE = "/root/.npm"
-        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64"
         PATH = "$JAVA_HOME/bin:$PATH"
     }
 
@@ -20,13 +20,13 @@ pipeline {
                     # Set environment variables for nvm and npm
                     ENV NVM_DIR /root/.nvm
                     ENV NPM_CONFIG_CACHE /root/.npm
-                    ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+                    ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
                     ENV PATH $JAVA_HOME/bin:$PATH
 
-                    # Install OpenJDK 17 and other dependencies
+                    # Install OpenJDK 11 and other dependencies
                     USER root
                     RUN apt-get update && \
-                        apt-get install -y openjdk-17-jdk curl
+                        apt-get install -y openjdk-11-jdk curl
 
                     # Install nvm and Node.js
                     RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
