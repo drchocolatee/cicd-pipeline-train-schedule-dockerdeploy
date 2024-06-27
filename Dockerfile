@@ -2,8 +2,8 @@
 FROM node:18-buster
 
 # Set environment variables for nvm and npm
-ENV NVM_DIR /home/jenkins/.nvm
-ENV NPM_CONFIG_CACHE /home/jenkins/.npm
+ENV NVM_DIR /root/.nvm
+ENV NPM_CONFIG_CACHE /root/.npm
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64
 ENV PATH $JAVA_HOME/bin:$PATH
 
@@ -15,15 +15,6 @@ RUN apt-get update && \
     echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
     apt-get update && \
     apt-get install -y temurin-11-jdk curl
-
-# Create a non-root user
-RUN useradd -m jenkins && \
-    mkdir -p /home/jenkins/.nvm && \
-    mkdir -p /home/jenkins/.npm && \
-    chown -R jenkins:jenkins /home/jenkins/.nvm /home/jenkins/.npm
-
-# Switch to the new user
-USER jenkins
 
 # Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
@@ -38,6 +29,9 @@ WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
+
+# Change ownership and permissions of the application directory
+RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app
 
 # Install any needed packages
 RUN npm install
