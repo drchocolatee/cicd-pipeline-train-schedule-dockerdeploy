@@ -1,10 +1,13 @@
-# Use an official Node.js runtime as a parent image
-FROM node:18
+# Use a CentOS-based Node.js runtime as a parent image
+FROM centos:8
+
+# Install Node.js
+RUN dnf module install -y nodejs:14
 
 # Install Java
-RUN yum -y update && \
-    yum -y install java-11-openjdk-devel && \
-    yum clean all
+RUN dnf -y update && \
+    dnf -y install java-11-openjdk-devel && \
+    dnf clean all
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
