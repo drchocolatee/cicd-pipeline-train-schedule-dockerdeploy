@@ -12,12 +12,12 @@ pipeline {
                     // Install nvm
                     sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
 
-                    // Load nvm and install Node.js LTS
+                    // Load nvm and install a compatible Node.js version
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-                        nvm install --lts
-                        nvm use --lts
+                        nvm install 16.20.0
+                        nvm use 16.20.0
                         npm install -g npm@latest
                     '''
                 }
