@@ -31,9 +31,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Ensure the correct permissions for package files
-RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app && \
-    chown -R root:root $NVM_DIR $NPM_CONFIG_CACHE && chmod -R 777 $NVM_DIR $NPM_CONFIG_CACHE && \
-    chown -R root:root /root && chmod -R 777 /root
+RUN chown -R root:root /usr/src/app $NVM_DIR $NPM_CONFIG_CACHE && \
+    chmod -R 777 /usr/src/app $NVM_DIR $NPM_CONFIG_CACHE
 
 # Install any needed packages
 RUN npm install
@@ -42,9 +41,7 @@ RUN npm install
 COPY . .
 
 # Ensure the correct permissions for all files
-RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app && \
-    chown -R root:root $NPM_CONFIG_CACHE && chmod -R 777 $NPM_CONFIG_CACHE && \
-    chown -R root:root /root/ && chmod -R 777 /root/
+RUN chown -R root:root /usr/src/app && chmod -R 777 /usr/src/app
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
