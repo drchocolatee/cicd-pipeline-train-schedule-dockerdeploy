@@ -1,6 +1,9 @@
 # Use a CentOS-based Node.js runtime as a parent image
 FROM centos:8
 
+# Switch to CentOS Stream repositories
+RUN dnf -y install centos-release-stream && dnf -y swap centos-{linux,stream}-repos && dnf -y distro-sync
+
 # Install Node.js
 RUN dnf module install -y nodejs:14
 
