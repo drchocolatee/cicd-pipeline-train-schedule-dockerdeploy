@@ -1,20 +1,25 @@
 pipeline {
     agent any
 
+    environment {
+        NVM_DIR = "${env.HOME}/.nvm"
+    }
+
     stages {
         stage('Setup') {
             steps {
                 script {
                     // Install nvm
                     sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
-                    sh 'source ~/.nvm/nvm.sh'
-                    
-                    // Install Node.js LTS
-                    sh 'nvm install --lts'
-                    sh 'nvm use --lts'
-                    
-                    // Update npm to latest version
-                    sh 'npm install -g npm@latest'
+
+                    // Load nvm and install Node.js LTS
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm install --lts
+                        nvm use --lts
+                        npm install -g npm@latest
+                    '''
                 }
             }
         }
