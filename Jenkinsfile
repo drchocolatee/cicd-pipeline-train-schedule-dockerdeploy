@@ -1,7 +1,7 @@
 pipeline {
     agent {
-        docker {
-            image 'node:18-buster'
+        dockerfile {
+            filename 'Dockerfile'
             args '-p 8080:8080'
         }
     }
@@ -14,7 +14,7 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    // Install nvm and use it within the container
+                    // Use the Docker image to install Node.js and npm
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
