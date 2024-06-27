@@ -9,7 +9,7 @@ pipeline {
     environment {
         NVM_DIR = "/var/lib/jenkins/workspace/train-schedule_master/.nvm"
         NPM_CONFIG_CACHE = "/var/lib/jenkins/workspace/train-schedule_master/.npm"
-        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-amd64"
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
         PATH = "$JAVA_HOME/bin:$PATH"
     }
 
@@ -32,7 +32,7 @@ pipeline {
                         # Temporarily switch to root to install Java
                         sudo sh -c '
                             apt-get update && \
-                            apt-get install -y openjdk-11-jdk
+                            apt-get install -y openjdk-17-jdk
                         '
                     '''
                 }
