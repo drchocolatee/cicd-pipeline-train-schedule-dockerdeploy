@@ -98,7 +98,7 @@ pipeline {
                         nvm use 18.17.0
                         npm install -g npm@latest
                         chown -R root:root $NVM_DIR $NPM_CONFIG_CACHE && chmod -R 777 $NVM_DIR $NPM_CONFIG_CACHE && \
-                        chown -R root:root /root/.npm && chmod -R 777 /root/.npm
+                        chown -R root:root /root && chmod -R 777 /root
                     '''
                 }
             }
