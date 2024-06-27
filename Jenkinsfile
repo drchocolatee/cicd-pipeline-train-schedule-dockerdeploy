@@ -23,10 +23,14 @@ pipeline {
                     ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64
                     ENV PATH $JAVA_HOME/bin:$PATH
 
-                    # Install OpenJDK 11 and other dependencies
+                    # Add the AdoptOpenJDK repository and install Java 17
                     USER root
                     RUN apt-get update && \
-                        apt-get install -y openjdk-11-jdk curl
+                        apt-get install -y wget gnupg && \
+                        wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && \
+                        echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
+                        apt-get update && \
+                        apt-get install -y temurin-17-jdk curl
 
                     # Install nvm and Node.js
                     RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
