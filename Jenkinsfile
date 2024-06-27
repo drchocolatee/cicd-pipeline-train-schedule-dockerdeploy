@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'custom-node-java17:18-buster'
+            image 'custom-node-java17:latest'
             args '-u 996:993 -p 8081:8080'
         }
     }
@@ -41,20 +41,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    app = docker.build("willbla/train-schedule")
-                    app.inside {
-                        sh 'echo $(curl localhost:8080)'
-                    }
-                }
-            }
-        }
-
         stage('Push Docker Image') {
             when {
                 branch 'master'
@@ -62,8 +48,9 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
+                        sh 'docker tag custom-node-java17:latest willbla/train-schedule:${env.BUILD_NUMBER}'
+                        sh 'docker push willbla/train-schedule:${env.BUILD_NUMBER}'
+                        sh 'docker push willbla/train-schedule:latest'
                     }
                 }
             }
