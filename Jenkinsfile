@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME = 'custom-node-java17:latest'
         NVM_DIR = "/root/.nvm"
         NPM_CONFIG_CACHE = "/root/.npm"
-        JAVA_HOME = "/usr/lib/jvm/temurin-17-jdk-amd64"
+        JAVA_HOME = "/usr/lib/jvm/java-17-amazon-corretto"
         PATH = "$JAVA_HOME/bin:$PATH"
     }
 
@@ -20,20 +20,17 @@ pipeline {
                     # Set environment variables for nvm and npm
                     ENV NVM_DIR /root/.nvm
                     ENV NPM_CONFIG_CACHE /root/.npm
-                    ENV JAVA_HOME /usr/lib/jvm/temurin-17-jdk-amd64
+                    ENV JAVA_HOME /usr/lib/jvm/java-17-amazon-corretto
                     ENV PATH $JAVA_HOME/bin:$PATH
 
-                    # Add the AdoptOpenJDK repository and install Java 17
+                    # Add the Amazon Corretto repository and install Java 17
                     USER root
-                    RUN apt-get update && \
-                        apt-get install -y wget gnupg && \
-                        wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && \
-                        echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
-                        apt-get update && \
-                        apt-get install -y temurin-17-jdk curl
+                    RUN curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
+                        yum install -y java-17-amazon-corretto-devel curl
 
                     # Install nvm and Node.js
-                    RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+                    RUN mkdir -p $NVM_DIR && \
+                        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
                         . $NVM_DIR/nvm.sh && \
                         nvm install 18.17.0 && \
                         nvm use 18.17.0 && \
