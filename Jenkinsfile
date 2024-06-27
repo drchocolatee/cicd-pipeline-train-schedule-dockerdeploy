@@ -1,6 +1,24 @@
 pipeline {
     agent any
+
     stages {
+        stage('Setup') {
+            steps {
+                script {
+                    // Install nvm
+                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
+                    sh 'source ~/.nvm/nvm.sh'
+                    
+                    // Install Node.js LTS
+                    sh 'nvm install --lts'
+                    sh 'nvm use --lts'
+                    
+                    // Update npm to latest version
+                    sh 'npm install -g npm@latest'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -8,6 +26,7 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
+
         stage('Build Docker Image') {
             when {
                 branch 'master'
@@ -21,6 +40,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push Docker Image') {
             when {
                 branch 'master'
@@ -34,6 +54,7 @@ pipeline {
                 }
             }
         }
+
         stage('DeployToProduction') {
             when {
                 branch 'master'
@@ -48,7 +69,7 @@ pipeline {
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
                         } catch (err) {
-                            echo: 'caught error: $err'
+                            echo "caught error: ${err}"
                         }
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d willbla/train-schedule:${env.BUILD_NUMBER}\""
                     }
