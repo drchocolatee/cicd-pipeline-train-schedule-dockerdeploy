@@ -13,6 +13,7 @@ pipeline {
                     echo 'Setup stage running inside Docker container'
                     sh 'node -v' // Verify Node.js version
                     sh 'npm -v'  // Verify npm version
+                    sh 'java -version' // Verify Java version
                 }
             }
         }
