@@ -1,20 +1,5 @@
-# Use a CentOS-based Node.js runtime as a parent image
-FROM centos:8
-
-# Switch to CentOS Stream repositories
-RUN dnf -y install centos-release-stream && dnf -y swap centos-{linux,stream}-repos && dnf -y distro-sync
-
-# Install Node.js
-RUN dnf module install -y nodejs:14
-
-# Install Java
-RUN dnf -y update && \
-    dnf -y install java-11-openjdk-devel && \
-    dnf clean all
-
-# Set JAVA_HOME environment variable
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-ENV PATH=$JAVA_HOME/bin:$PATH
+# Use an official Node.js runtime as a parent image
+FROM node:18
 
 # Set the working directory to /usr/src/app
 WORKDIR /usr/src/app
@@ -23,6 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install any needed packages
+RUN npm install -g npm@latest
 RUN npm install
 
 # Copy the rest of the application source code to the working directory
