@@ -10,6 +10,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 # Add the Amazon Corretto repository and install Java 17
 USER root
 RUN mkdir -p /etc/yum.repos.d && \
+    chmod 755 /etc/yum.repos.d && \
     curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
     yum install -y java-17-amazon-corretto-devel curl
 
