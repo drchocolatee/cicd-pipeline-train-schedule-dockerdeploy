@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'custom-node-java11:latest'
-        NVM_DIR = "/root/.nvm"
-        NPM_CONFIG_CACHE = "/root/.npm"
+        NVM_DIR = "/home/jenkins/.nvm"
+        NPM_CONFIG_CACHE = "/home/jenkins/.npm"
         JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64"
         PATH = "$JAVA_HOME/bin:$PATH"
     }
@@ -18,19 +18,28 @@ pipeline {
                     FROM node:18-buster
 
                     # Set environment variables for nvm and npm
-                    ENV NVM_DIR /root/.nvm
-                    ENV NPM_CONFIG_CACHE /root/.npm
+                    ENV NVM_DIR /home/jenkins/.nvm
+                    ENV NPM_CONFIG_CACHE /home/jenkins/.npm
                     ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64
                     ENV PATH $JAVA_HOME/bin:$PATH
 
-                    # Add the AdoptOpenJDK repository and install Java 17
+                    # Add the AdoptOpenJDK repository and install Java 11
                     USER root
                     RUN apt-get update && \
                         apt-get install -y wget gnupg && \
                         wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && \
                         echo "deb https://packages.adoptium.net/artifactory/deb focal main" > /etc/apt/sources.list.d/adoptium.list && \
                         apt-get update && \
-                        apt-get install -y temurin-17-jdk curl
+                        apt-get install -y temurin-11-jdk curl
+
+                    # Create a non-root user
+                    RUN useradd -m jenkins && \
+                        mkdir -p /home/jenkins/.nvm && \
+                        mkdir -p /home/jenkins/.npm && \
+                        chown -R jenkins:jenkins /home/jenkins/.nvm /home/jenkins/.npm
+
+                    # Switch to the new user
+                    USER jenkins
 
                     # Install nvm and Node.js
                     RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
@@ -71,15 +80,15 @@ pipeline {
             agent {
                 docker {
                     image "${env.IMAGE_NAME}"
-                    args '-u root -p 8081:8080'
+                    args '-u jenkins -p 8081:8080'
                 }
             }
             steps {
                 script {
                     // Install nvm and npm
                     sh '''
-                        export NVM_DIR="/root/.nvm"
-                        export NPM_CONFIG_CACHE="/root/.npm"
+                        export NVM_DIR="/home/jenkins/.nvm"
+                        export NPM_CONFIG_CACHE="/home/jenkins/.npm"
                         mkdir -p $NVM_DIR
                         mkdir -p $NPM_CONFIG_CACHE
                         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
