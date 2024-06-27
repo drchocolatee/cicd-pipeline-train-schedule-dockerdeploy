@@ -20,7 +20,7 @@ pipeline {
                     # Set environment variables for nvm and npm
                     ENV NVM_DIR /root/.nvm
                     ENV NPM_CONFIG_CACHE /root/.npm
-                    ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
+                    ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.el7_9.x86_64
                     ENV PATH $JAVA_HOME/bin:$PATH
 
                     # Install OpenJDK 11 and other dependencies
