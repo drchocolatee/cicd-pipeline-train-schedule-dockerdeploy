@@ -25,12 +25,13 @@ pipeline {
 
                     # Add the Amazon Corretto repository and install Java 17
                     USER root
-                    RUN curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
+                    RUN mkdir -p /etc/yum.repos.d && \
+                        chmod 755 /etc/yum.repos.d && \
+                        curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo && \
                         yum install -y java-17-amazon-corretto-devel curl
 
                     # Install nvm and Node.js
-                    RUN mkdir -p $NVM_DIR && \
-                        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+                    RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
                         . $NVM_DIR/nvm.sh && \
                         nvm install 18.17.0 && \
                         nvm use 18.17.0 && \
