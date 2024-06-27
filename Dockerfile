@@ -4,15 +4,13 @@ FROM node:18-buster
 # Set environment variables for nvm and npm
 ENV NVM_DIR /root/.nvm
 ENV NPM_CONFIG_CACHE /root/.npm
-ENV JAVA_HOME /opt/java/openjdk
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Install AdoptOpenJDK 17 and other dependencies
+# Install OpenJDK 11 and other dependencies
 USER root
 RUN apt-get update && \
-    apt-get install -y wget curl && \
-    wget -qO- https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2+8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.2_8.tar.gz | tar xvz -C /opt/java && \
-    mv /opt/java/jdk-17.0.2+8 /opt/java/openjdk
+    apt-get install -y openjdk-11-jdk curl
 
 # Install nvm and Node.js
 RUN mkdir -p $NVM_DIR && \
