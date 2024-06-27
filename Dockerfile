@@ -4,11 +4,20 @@ FROM node:18
 # Set the working directory to /usr/src/app
 WORKDIR /usr/src/app
 
+# Install nvm and set up Node.js version
+ENV NVM_DIR /root/.nvm
+RUN mkdir -p $NVM_DIR && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+    . $NVM_DIR/nvm.sh && \
+    nvm install 18.17.0 && \
+    nvm use 18.17.0 && \
+    nvm alias default 18.17.0 && \
+    npm install -g npm@latest
+
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install any needed packages
-RUN npm install -g npm@latest
 RUN npm install
 
 # Copy the rest of the application source code to the working directory
