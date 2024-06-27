@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile'
-            args '-p 8080:8080'
+            args '-p 8081:8080'
         }
     }
 
