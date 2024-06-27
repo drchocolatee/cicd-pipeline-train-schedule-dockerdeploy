@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-buster'
+            args '-p 8080:8080'
+        }
+    }
 
     environment {
         NVM_DIR = "${env.HOME}/.nvm"
@@ -9,10 +14,7 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    // Install nvm
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash'
-
-                    // Load nvm and install a compatible Node.js version
+                    // Install nvm and use it within the container
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
