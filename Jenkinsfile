@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        NVM_DIR = "${env.HOME}/.nvm"
+        NVM_DIR = "/root/.nvm"
     }
 
     stages {
@@ -16,7 +16,8 @@ pipeline {
                 script {
                     // Install nvm and use it within the container
                     sh '''
-                        export NVM_DIR="$HOME/.nvm"
+                        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+                        export NVM_DIR="/root/.nvm"
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
                         nvm install 18.17.0
                         nvm use 18.17.0
