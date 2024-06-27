@@ -18,7 +18,7 @@ pipeline {
                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
                         nvm install 16.20.0
                         nvm use 16.20.0
-                        npm install -g npm@latest
+                        npm install -g npm@8.19.4  # Install a compatible npm version
                     '''
                 }
             }
