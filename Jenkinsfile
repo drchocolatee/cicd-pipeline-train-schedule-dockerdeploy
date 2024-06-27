@@ -2,18 +2,26 @@ pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile'
-            args '-p 8081:8080'
+            args '-p 8080:8080'
         }
+    }
+
+    environment {
+        NVM_DIR = "${env.HOME}/.nvm"
     }
 
     stages {
         stage('Setup') {
             steps {
                 script {
-                    echo 'Setup stage running inside Docker container'
-                    sh 'node -v'  // Verify Node.js version
-                    sh 'npm -v'   // Verify npm version
-                    sh 'java -version' // Verify Java version
+                    // Use the Docker image to install Node.js and npm
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm install 18.17.0
+                        nvm use 18.17.0
+                        npm install -g npm@latest
+                    '''
                 }
             }
         }
